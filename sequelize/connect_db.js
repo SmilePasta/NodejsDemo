@@ -2,12 +2,12 @@
 //http://docs.sequelizejs.com/manual/installation/getting-started.html
 
 var Sequelize = require('sequelize');
-
+var config = require('./config');
 //多配置连接
 //new Sequelize(database, [username=null], [password=null], [options={}])
-const sequelize = new Sequelize('reaca_wechat', 'smile', '123456', {
-    host: 'localhost', // 数据库地址
-    dialect: 'mysql', // 指定连接的数据库类型
+const sequelize = new Sequelize(config.database, config.username, config.password, {
+    host: config.host, // 数据库地址
+    dialect: config.type, // 指定连接的数据库类型
 
     pool: {
         max: 5, // 连接池中最大连接数量
@@ -16,7 +16,7 @@ const sequelize = new Sequelize('reaca_wechat', 'smile', '123456', {
     },
 });
 
-//通过uri连接数据库(未测)
+//通过uri连接数据库
 // const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
 
 sequelize
@@ -42,10 +42,7 @@ const User = sequelize.define('user',{
 //在数据库中创建User Model,并且插入数据
 //force:如果表已存在刚drop
 // User.sync({force:true}).then(() => {
-// 	return User.create({
-// 		firstName:'John',
-// 		lastName:'Hancock'
-// 	},{
+//     return User.create({
 // 		firstName:'Marry',
 // 		lastName:'Lu'
 // 	});
