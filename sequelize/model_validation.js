@@ -10,7 +10,6 @@ const sequelize = new Sequelize(connectUri, {
     }
 });
 
-
 var Account = sequelize.define('account', {
     'email': {
         'type': Sequelize.CHAR(20),
@@ -24,10 +23,10 @@ var Account = sequelize.define('account', {
             this.setDataValue('email', email.toUpperCase());
         },
         //验证
-        validate:{
-        	isEmail:{
-        		msg:'email address format error,please check up email address.'
-        	}
+        validate: {
+            isEmail: {
+                msg: 'email address format error,please check up email address.'
+            }
         }
     },
     'phone': {
@@ -40,20 +39,32 @@ var Account = sequelize.define('account', {
             this.setDataValue('phone', phone.toUpperCase());
         }
     }
-},{
-	//自定义全局验证，在执行数据库操作之前会进入该validate
-	validate:{
-		validateEnter:function(){
-			console.log('start validate function');
-		}
-	}
+}, {
+    //自定义全局验证，在执行数据库操作之前会进入该validate
+    validate: {
+        validateEnter: function() {
+            console.log('start validate function');
+        }
+    },
 });
 
-Account.create({
-	'email': 'mmtest@gmail.com', //error format
-	'phone': '12345678901'
+
+Account.sync({ force: true }).then(() => {
+    return Account.create({
+        'email': 'mmtest@gmail.com',
+        'phone': '12345678901'
+    });
 });
 
+//导入model操作
+var Book = sequelize.import('./models/book')
+
+Book.sync({ force: true }).then(() => {
+    return Book.create({
+        'name': 'Brhein History',
+        'description': 'This is smart book.'
+    })
+});
 
 // var ValidateMe = sequelize.define('foo', {
 //   foo: {
@@ -104,3 +115,33 @@ Account.create({
 //     }
 //   }
 // });
+
+
+// Project.findAll({
+//   where: {
+//     id: {
+//       $and: {a: 5}           // AND (a = 5)
+//       $or: [{a: 5}, {a: 6}]  // (a = 5 OR a = 6)
+//       $gt: 6,                // id > 6
+//       $gte: 6,               // id >= 6
+//       $lt: 10,               // id < 10
+//       $lte: 10,              // id <= 10
+//       $ne: 20,               // id != 20
+//       $between: [6, 10],     // BETWEEN 6 AND 10
+//       $notBetween: [11, 15], // NOT BETWEEN 11 AND 15
+//       $in: [1, 2],           // IN [1, 2]
+//       $notIn: [1, 2],        // NOT IN [1, 2]
+//       $like: '%hat',         // LIKE '%hat'
+//       $notLike: '%hat'       // NOT LIKE '%hat'
+//       $iLike: '%hat'         // ILIKE '%hat' (case insensitive)  (PG only)
+//       $notILike: '%hat'      // NOT ILIKE '%hat'  (PG only)
+//       $overlap: [1, 2]       // && [1, 2] (PG array overlap operator)
+//       $contains: [1, 2]      // @> [1, 2] (PG array contains operator)
+//       $contained: [1, 2]     // <@ [1, 2] (PG array contained by operator)
+//       $any: [2,3]            // ANY ARRAY[2, 3]::INTEGER (PG only)
+//     },
+//     status: {
+//       $not: false,           // status NOT FALSE
+//     }
+//   }
+// })
