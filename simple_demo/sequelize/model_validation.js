@@ -49,22 +49,27 @@ var Account = sequelize.define('account', {
 });
 
 
-Account.sync({ force: true }).then(() => {
-    return Account.create({
-        'email': 'mmtest@gmail.com',
-        'phone': '12345678901'
-    });
-});
+// Account.sync({ force: true }).then(() => {
+//     return Account.create({
+//         'email': 'mmtest@gmail.com',
+//         'phone': '12345678901'
+//     });
+// });
 
-//导入model操作
-var Book = sequelize.import('./models/book')
+// //导入model操作
+// var Book = sequelize.import('./models/book')
 
-Book.sync({ force: true }).then(() => {
-    return Book.create({
-        'name': 'Brhein History',
-        'description': 'This is smart book.'
-    })
-});
+// Book.sync({ force: true }).then(() => {
+//     return Book.create({
+//         'name': 'Brhein History',
+//         'description': 'This is smart book.'
+//     })
+// });
+
+// sequelize.query('select * from account').spread((results, metadata) => {
+//     console.log(results);
+// });
+
 
 // var ValidateMe = sequelize.define('foo', {
 //   foo: {
