@@ -11,7 +11,6 @@ if (process.env.DATABASE_URL) {
 } else {
     var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
-
 var db = {};
 
 fs
@@ -31,5 +30,4 @@ Object.keys(db).forEach(function(modelName) {
 
 db.sequelize = sequelize;
 
-console.log(db)
 module.exports = db;
