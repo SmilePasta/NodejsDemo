@@ -11,3 +11,4 @@ fs.readFile('main.js', 'utf-8', function(err,data){
 		console.log(data)
 	}
 });
+console.log('test fork!')
