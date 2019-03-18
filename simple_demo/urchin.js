@@ -6,18 +6,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 //Node.js 内置的fs模块就是文件系统模块，负责读写文件。和所有其他JS模块不同的是，fs模块同时提供了异步和同步的方法。
 const fs = require('fs')
-
-function readText(pathname) {
-    var bin = fs.readFileSync(pathname)
-
-    if (bin[0] === 0xEF && bin[1] === 0xBB && bin[2] === 0xBF) {
-        bin = bin.slice(3)
-    }
-
-    return bin.toString('utf-8')
-}
-
-var newsVersionCode = 100
+//时间
+var sd = require('silly-datetime');
+//文件读写工具类
+var fileutil = require('./fileutil')
 
 // 创建express实例
 const app = express()
@@ -37,39 +29,81 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-// 开始写接口
+// 版本更新
 app.route('/getVersionCode')
     .post((req, res) => {
-        // let allClient = readText('version.json')
-        // console.log("allClient = "+allClient)
-        // let t = JSON.parse(allClient)
+        let allClient = fileutil.readText('version.json')
+        console.log("allClient = " + allClient)
+        let t = JSON.parse(allClient)
         let params = req.body
         console.log(params)
-        var message = new Object()
         let response
-        if (params.versionCode != newsVersionCode) {
-            //版本号不相等，就要更新应用
-            if (params.language === 'zh') {
-                message.tips = '发现新版本，请更新'
-            } else {
-                message.tips = 'Found a new version, please update'
-            }
-            message.versionCode = newsVersionCode
-            message.apkUrl = 'https://cdn.smilepasta.com/urchin_v1.0.2_100_20181204_debug.apk'
-            message.isFocreUpdate = 1
+        if (params.versionCode != t.newsVersionCode) {
             response = {
                 code: 200,
-                data: message
+                data: t
             }
         } else {
             response = {
                 code: 300,
-                data: message
+                data: t
             }
         }
         res.status(200)
         res.send(response)
     })
+
+// 写入图片路径
+app.route('/addImage')
+    .post((req, res) => {
+        let params = req.body
+        var time = sd.format(new Date(), 'YYYY-MM-DD');
+        console.log(params)
+        var file = './images/' + time + '.txt'
+        fs.exists(file, function(exists) {
+            if (!exists) {
+                //创建文件
+              fs.createWriteStream(file)
+            }
+            // 写入文件后，都统一加一个都好分隔符
+            fileutil.writeText(file, params.imageUrls + ",")
+            let response = {
+                code: 200,
+                data: {}
+            }
+            res.status(200)
+            res.send(response)
+        })
+
+    })
+
+// 读取图片路径
+app.route('/getImage')
+    .get((req, res) => {
+        fs.readdir('./images', (err, files) => {
+            var imageUrlArr = []
+            files.forEach(file => {
+                var fileContent = fileutil.readText('./images/' + file)
+                var index = file.indexOf(".txt")
+                if (index != -1) {
+                    file = file.substring(0, index)
+                }
+                var dayImages = {
+                    day: file,
+                    images: fileContent.substring(0, fileContent.length - 1)
+                }
+                imageUrlArr.push(dayImages)
+            });
+            let response = {
+                code: 200,
+                data: { imageArr: imageUrlArr }
+            }
+            res.status(200)
+            res.send(response)
+        })
+
+    })
+
 // 开启服务器
 const server = app.listen(9999, function() {
     var host = server.address().address

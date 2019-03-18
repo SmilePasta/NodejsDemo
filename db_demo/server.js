@@ -15,7 +15,7 @@ console.log(JSON.stringify(users));
 // console.log(models.sequelize.QueryTypes.SELECT);
 
 //原生sql(https://itbilu.com/nodejs/npm/VJIR1CjMb.html)
-models.sequelize.query("SELECT * FROM `user`", { type: models.sequelize.QueryTypes.SELECT})
-  .then(function(users) {
-  	console.log(JSON.stringify(users))
-  })
+// models.sequelize.query("SELECT * FROM `user`", { type: models.sequelize.QueryTypes.SELECT})
+//   .then(function(users) {
+//   	console.log(JSON.stringify(users))
+//   })

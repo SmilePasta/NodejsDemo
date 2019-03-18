@@ -1,0 +1,7 @@
+package proto;
+message versionResp
+{
+	required string apkUrl = 1;
+	required int32 newsVersionCode = 2;
+	optional int32 isForceUpdate = 3;
+}

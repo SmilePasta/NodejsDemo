@@ -1,9 +1,9 @@
 {
     "development": {
-        "username": "smile",
-        "password": "123456",
-        "database": "node_test",
-        "host": "127.0.0.1",
+        "username": "urchin_cli",
+        "password": "urchin_pwd",
+        "database": "db_urchin",
+        "host": "97.64.21.185",
         "dialect": "mysql",
         "port": 3306
     },

@@ -1,0 +1,6 @@
+package proto;
+message versionReq
+{
+	required string platform = 1;
+	required int32 versionCode = 2;
+}

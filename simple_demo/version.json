@@ -1,6 +1,5 @@
 {
-    "versionTips":"发现新版本，新升级",
-    "url":"http://smilepasta.com",
-    "versionCode": 20,
-    "isForceUpdate": true
+    "apkUrl":"https://cdn.smilepasta.com/urchin_v1.0.2_100_20181204_debug.apk",
+    "versionCode": 100,
+    "isForceUpdate": 1
 }
