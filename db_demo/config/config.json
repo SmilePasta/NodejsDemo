@@ -1,9 +1,9 @@
 {
     "development": {
-        "username": "root",
-        "password": "root",
-        "database": "urchin",
-        "host": "97.64.21.185",
+        "username": "",
+        "password": "",
+        "database": "",
+        "host": "",
         "dialect": "mysql",
         "port": 3306
     },
